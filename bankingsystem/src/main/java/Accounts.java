@@ -38,9 +38,20 @@ public class Accounts {
                 e.printStackTrace();
             }
         }
-        return -1;
-
-
+        else {
+            String sql = "SELECT account_number FROM accounts WHERE email = ?";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, email);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getLong("account_number");
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+        throw new RuntimeException("Account creation failed. Please try again.");
     }
 
     private long generateAccountNumber() {

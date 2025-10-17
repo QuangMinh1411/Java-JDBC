@@ -24,7 +24,7 @@ public class AccountManager {
         try{
             connection.setAutoCommit(false);
             if(account_number!=0){
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Accounts WHERE account_number = ? and security_pin = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement(check_account_query);
                 preparedStatement.setLong(1, account_number);
                 preparedStatement.setString(2, security_pin);
                 ResultSet resultSet = preparedStatement.executeQuery();
