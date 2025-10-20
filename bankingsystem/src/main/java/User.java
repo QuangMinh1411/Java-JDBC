@@ -38,7 +38,7 @@ public class User {
                 System.out.println("Registration failed. Please try again.");
             }
         }catch(SQLException e){
-
+            e.printStackTrace();
         }
 
     }

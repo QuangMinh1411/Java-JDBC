@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/com/quangminh/bankingfxml/control/RegisterController.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/quangminh/bankingfxml/control/RegisterController.java" />
+              <option name="originalContent" value="package com.quangminh.bankingfxml.control;&#10;&#10;import com.quangminh.bankingfxml.model.Stageable;&#10;import javafx.fxml.FXML;&#10;import javafx.scene.control.Button;&#10;import javafx.scene.control.Label;&#10;import javafx.scene.control.PasswordField;&#10;import javafx.scene.control.TextField;&#10;import javafx.stage.Stage;&#10;&#10;public class RegisterController implements Stageable {&#10;    private Stage stage;&#10;    @FXML&#10;    private Label lblMessage;&#10;&#10;    // Added @FXML fields that correspond to fx:id values in register-view.fxml&#10;    @FXML&#10;    private Label formLbl;&#10;&#10;    @FXML&#10;    private Label lblName;&#10;&#10;    @FXML&#10;    private TextField txtName;&#10;&#10;    @FXML&#10;    private Label lblEmail;&#10;&#10;    @FXML&#10;    private TextField txtEmail;&#10;&#10;    @FXML&#10;    private Label lblPassword;&#10;&#10;    @FXML&#10;    private PasswordField txtPassword;&#10;&#10;    @FXML&#10;    private Button cancelBtn;&#10;&#10;    @FXML&#10;    private Button saveBtn;&#10;&#10;    @Override&#10;    public void setStage(Stage stage) {&#10;        this.stage = stage;&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.quangminh.bankingfxml.control;&#10;&#10;import com.quangminh.bankingfxml.model.Stageable;&#10;import javafx.fxml.FXML;&#10;import javafx.scene.control.Button;&#10;import javafx.scene.control.Label;&#10;import javafx.scene.control.PasswordField;&#10;import javafx.scene.control.TextField;&#10;import javafx.stage.Stage;&#10;&#10;public class RegisterController implements Stageable {&#10;    private Stage stage;&#10;    @FXML&#10;    private Label lblMessage;&#10;&#10;    // Added @FXML fields that correspond to fx:id values in register-view.fxml&#10;    @FXML&#10;    private Label formLbl;&#10;&#10;    @FXML&#10;    private Label lblName;&#10;&#10;    @FXML&#10;    private TextField txtName;&#10;&#10;    @FXML&#10;    private Label lblEmail;&#10;&#10;    @FXML&#10;    private TextField txtEmail;&#10;&#10;    @FXML&#10;    private Label lblPassword;&#10;&#10;    @FXML&#10;    private PasswordField txtPassword;&#10;&#10;    @FXML&#10;    private Button cancelBtn;&#10;&#10;    @FXML&#10;    private Button saveBtn;&#10;&#10;    @Override&#10;    public void setStage(Stage stage) {&#10;        this.stage = stage;&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
