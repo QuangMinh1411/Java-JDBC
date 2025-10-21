@@ -16,6 +16,8 @@ public class SceneFxmlApp extends Application {
     private static final String REGISTER_FXML = "/com/quangminh/bankingfxml/register-view.fxml";
     private static final String LOGIN_FXML = "/com/quangminh/bankingfxml/login-view.fxml";
     private static final String VIEW_DATA_FXML = "/com/quangminh/bankingfxml/data-view.fxml";
+    private static final String NEW_ACCOUNT_FXML = "/com/quangminh/bankingfxml/new-account.fxml";
+    private static final String TRANSACTION_FXML = "/com/quangminh/bankingfxml/transaction-view.fxml";
     private static Map<SceneName,FxmlInfo> scenes = new HashMap<>();
     public static void main(String[] args) {
         launch(args);
@@ -26,6 +28,8 @@ public class SceneFxmlApp extends Application {
         scenes.put(SceneName.REGISTER,new FxmlInfo(REGISTER_FXML,SceneName.REGISTER,stage));
         scenes.put(SceneName.LOGIN,new FxmlInfo(LOGIN_FXML,SceneName.LOGIN,stage));
         scenes.put(SceneName.VIEW_DATA,new FxmlInfo(VIEW_DATA_FXML,SceneName.VIEW_DATA,stage));
+        scenes.put(SceneName.NEW_ACCOUNT,new FxmlInfo(NEW_ACCOUNT_FXML,SceneName.NEW_ACCOUNT,stage));
+        scenes.put(SceneName.TRANSACTION,new FxmlInfo(TRANSACTION_FXML,SceneName.TRANSACTION,stage));
         stage.setTitle("Banking Application");
         stage.setScene(scenes.get(SceneName.MAIN).getScene());
         stage.show();

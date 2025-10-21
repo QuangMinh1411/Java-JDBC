@@ -2,6 +2,7 @@ module com.quangminh.bankingfxml {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires javafx.graphics;
 
 
     opens com.quangminh.bankingfxml to javafx.fxml;

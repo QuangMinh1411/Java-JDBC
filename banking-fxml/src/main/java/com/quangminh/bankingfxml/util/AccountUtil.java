@@ -151,4 +151,167 @@ public class AccountUtil {
         return securityPinColumn;
     }
 
+    public static long getAccountNumberByEmail(String email){
+        String sql = "SELECT account_number FROM accounts WHERE email = ?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("account_number");
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        // return -1 if not found or on error
+        return -1;
+    }
+
+    public static int debit_money(long account_number,double amount,String sercurity_pin){
+        String check_account_query = "SELECT * FROM accounts WHERE account_number = ? AND security_pin = ?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            connection.setAutoCommit(false);
+            if(account_number!=0){
+                PreparedStatement preparedStatement = connection.prepareStatement(check_account_query);
+                preparedStatement.setLong(1, account_number);
+                preparedStatement.setString(2, sercurity_pin);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if(resultSet.next()){
+                    double current_balance = resultSet.getDouble("balance");
+                    if(amount<=current_balance){
+                        String debit_query = "UPDATE accounts SET balance = balance - ? WHERE account_number = ?";
+                        PreparedStatement debitStatement = connection.prepareStatement(debit_query);
+                        debitStatement.setDouble(1, amount);
+                        debitStatement.setLong(2, account_number);
+                        int rowsAffected = debitStatement.executeUpdate();
+                        if(rowsAffected>0){
+                            connection.commit();
+                            getAccounts();
+                            connection.setAutoCommit(true);
+                            return 1;
+                        }else{
+                            connection.rollback();
+                            connection.setAutoCommit(true);
+                        }
+                    }else{
+                        System.out.println("Insufficient balance. Transaction aborted.");
+                        return 0;
+                    }
+                }
+                else {
+                    System.out.println("Invalid Security Pin. Transaction aborted.");
+                    return -1;
+                }
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
+    public static int credit_money(long account_number,double amount,String sercurity_pin){
+        String check_account_query = "SELECT * FROM accounts WHERE account_number = ? AND security_pin = ?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            connection.setAutoCommit(false);
+            if(account_number!=0){
+                PreparedStatement preparedStatement = connection.prepareStatement(check_account_query);
+                preparedStatement.setLong(1, account_number);
+                preparedStatement.setString(2, sercurity_pin);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if(resultSet.next()){
+                    String credit_query = "UPDATE accounts SET balance = balance + ? WHERE account_number = ?";
+                    PreparedStatement creditStatement = connection.prepareStatement(credit_query);
+                    creditStatement.setDouble(1, amount);
+                    creditStatement.setLong(2, account_number);
+                    int rowsAffected = creditStatement.executeUpdate();
+                    if(rowsAffected > 0){
+                        connection.commit();
+                        getAccounts();
+                        connection.setAutoCommit(true);
+                        return 1;
+                    }else{
+                        connection.rollback();
+                        connection.setAutoCommit(true);
+                    }
+                }
+                else {
+                    System.out.println("Invalid Security Pin. Transaction aborted.");
+                    return -1;
+                }
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
+    public static int transfer_money(long sender_account_number, long receiver_account_number, double amount, String security_pin){
+        String check_account_query = "SELECT * FROM accounts WHERE account_number = ? AND security_pin = ?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            connection.setAutoCommit(false);
+            if(sender_account_number!=0 && receiver_account_number!=0){
+                PreparedStatement preparedStatement = connection.prepareStatement(check_account_query);
+                preparedStatement.setLong(1, sender_account_number);
+                preparedStatement.setString(2, security_pin);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if(resultSet.next()){
+                    double current_balance = resultSet.getDouble("balance");
+                    if(amount<=current_balance){
+                        String debit_query = "UPDATE accounts SET balance = balance - ? WHERE account_number = ?";
+                        PreparedStatement debitStatement = connection.prepareStatement(debit_query);
+                        debitStatement.setDouble(1, amount);
+                        debitStatement.setLong(2, sender_account_number);
+                        int rowsAffected1 = debitStatement.executeUpdate();
+
+                        String credit_query = "UPDATE accounts SET balance = balance + ? WHERE account_number = ?";
+                        PreparedStatement creditStatement = connection.prepareStatement(credit_query);
+                        creditStatement.setDouble(1, amount);
+                        creditStatement.setLong(2, receiver_account_number);
+                        int rowsAffected2 = creditStatement.executeUpdate();
+
+                        if(rowsAffected1>0 && rowsAffected2>0){
+                            connection.commit();
+                            getAccounts();
+                            connection.setAutoCommit(true);
+                            return 1;
+                        }else{
+                            connection.rollback();
+                            connection.setAutoCommit(true);
+                        }
+                    }else{
+                        System.out.println("Insufficient balance. Transaction aborted.");
+                        return 0;
+                    }
+                }
+                else {
+                    System.out.println("Invalid Security Pin. Transaction aborted.");
+                    return -1;
+                }
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+    public static double getBalance(long account_number, String security_pin) {
+        String check_account_query = "SELECT * FROM accounts WHERE account_number = ? AND security_pin = ?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement preparedStatement = connection.prepareStatement(check_account_query);
+            preparedStatement.setLong(1, account_number);
+            preparedStatement.setString(2, security_pin);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                double current_balance = resultSet.getDouble("balance");
+                return current_balance;
+            }else{
+                System.out.println("Invalid Security Pin.");
+                return -1;
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
 }
