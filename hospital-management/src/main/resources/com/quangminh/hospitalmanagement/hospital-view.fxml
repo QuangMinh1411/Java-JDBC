@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quangminh.hospitalmanagement.control.HospitalController">
+   <center>
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Patients">
+               <content>
+                  <HBox spacing="10.0">
+                     <children>
+                        <SplitPane dividerPositions="0.3879598662207358" prefHeight="351.0" prefWidth="600.0">
+                           <items>
+                              <VBox alignment="CENTER" prefHeight="349.0" prefWidth="316.0" spacing="10.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Patient Form" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblpName" text="Name">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtpName" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="70.0" prefWidth="250.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblpAge" text="Age">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtpAge" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblpGender" text="Gender">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <RadioButton fx:id="rdoMale" mnemonicParsing="false" selected="true" text="Male">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="GenderGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="rdoFemale" mnemonicParsing="false" text="Female" toggleGroup="$GenderGroup" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="btnAddPatient" mnemonicParsing="false" onAction="#addPatient" text="Add">
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="boxPatient" alignment="CENTER" prefHeight="349.0" prefWidth="319.0">
+                                 <children>
+                                    <Label fx:id="lblpView" text="Patient View" />
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </HBox>
+               </content>
+          </Tab>
+          <Tab text="Doctors">
+               <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <SplitPane dividerPositions="0.5" prefHeight="351.0" prefWidth="601.0">
+                           <items>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Doctor Form" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lbldName" text="Name">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtdName" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="70.0" prefWidth="250.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblpAge1" text="Speciality">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="txtdSpec" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="btnAddDoctor" mnemonicParsing="false" onAction="#addDoctor" text="Add" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="boxDoctor" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label fx:id="lblpViewDoctor" text="Doctor View" />
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </HBox>
+               </content>
+          </Tab>
+            <Tab text="Appointments" />
+        </tabs>
+      </TabPane>
+   </center>
+   <top>
+      <Label text="Hospital Management" textFill="ORANGE" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </top>
+</BorderPane>
