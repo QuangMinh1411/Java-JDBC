@@ -7,7 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 
+import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class PatientUtil {
     private static final String url = "jdbc:mysql://localhost:3306/hospital";
@@ -76,5 +78,42 @@ public class PatientUtil {
         TableColumn<Patient,String> genderColumn = new TableColumn<>("gender");
         genderColumn.setCellValueFactory(cellData->new SimpleStringProperty(cellData.getValue().getGender()));
         return genderColumn;
+    }
+
+    public static String getPatientName(int id){
+        String sql = "select * from patients where id=?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getString("name");
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static ArrayList<Patient> getPatientModel(){
+        ArrayList<Patient> patientModel = new ArrayList<>();
+        getPatients().stream().forEach(patient -> {
+            patientModel.add(patient);
+        });
+        return patientModel;
+    }
+    public static boolean getPatientById(int id){
+        String sql = "select * from patients where id=?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

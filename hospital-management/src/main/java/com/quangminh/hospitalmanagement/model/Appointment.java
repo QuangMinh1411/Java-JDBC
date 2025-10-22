@@ -10,6 +10,13 @@ public class Appointment {
     private int doctorId;
     private LocalDate appointmentDate;
 
+    public Appointment(int id, int patientId, int doctorId, LocalDate appointmentDate) {
+        this.id = id;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.appointmentDate = appointmentDate;
+    }
+
     public Appointment(int patientId, int doctorId, LocalDate appointmentDate) {
         this.id = ID_GENERATOR.getAndIncrement();
         this.patientId = patientId;

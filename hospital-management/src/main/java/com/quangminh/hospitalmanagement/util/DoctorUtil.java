@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DoctorUtil {
     private static final String url = "jdbc:mysql://localhost:3306/hospital";
@@ -73,5 +74,41 @@ public class DoctorUtil {
         TableColumn<Doctor,String> specialtyColumn = new TableColumn<>("specialty");
         specialtyColumn.setCellValueFactory(cellData->new SimpleStringProperty(cellData.getValue().getSpecialty()));
         return specialtyColumn;
+    }
+
+    public static String getDoctorName(int id){
+        String sql = "select * from doctors where id=?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getString("name");
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    public static ArrayList<Doctor> getDoctorModel(){
+        ArrayList<Doctor> doctorModel = new ArrayList<>();
+        getDoctors().stream().forEach(doctor -> {
+            doctorModel.add(doctor);
+        });
+        return doctorModel;
+    }
+    public static boolean getDoctorById(int id){
+        String sql = "select * from doctors where id=?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,id);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+        return false;
     }
 }

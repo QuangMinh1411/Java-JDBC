@@ -3,6 +3,7 @@ module com.quangminh.hospitalmanagement {
     requires javafx.fxml;
     requires java.sql;
     requires javafx.base;
+    requires java.desktop;
 
     opens com.quangminh.hospitalmanagement to javafx.fxml;
     exports com.quangminh.hospitalmanagement;

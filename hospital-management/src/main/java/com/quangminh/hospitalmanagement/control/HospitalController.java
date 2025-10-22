@@ -1,15 +1,23 @@
 package com.quangminh.hospitalmanagement.control;
 
 import com.quangminh.hospitalmanagement.HospitalApp;
+import com.quangminh.hospitalmanagement.model.Appointment;
 import com.quangminh.hospitalmanagement.model.Doctor;
 import com.quangminh.hospitalmanagement.model.Patient;
+import com.quangminh.hospitalmanagement.util.AppointmentUtil;
 import com.quangminh.hospitalmanagement.util.DoctorUtil;
 import com.quangminh.hospitalmanagement.util.PatientUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+import javafx.util.Callback;
+
+import java.time.LocalDate;
 
 public class HospitalController {
     @FXML private Label lblpName;
@@ -32,11 +40,81 @@ public class HospitalController {
     @FXML private Button btnAddDoctor;
     @FXML private VBox boxDoctor;
     @FXML private Label lblpViewDoctor;
-
+    @FXML private HBox boxListPatient;
+    @FXML private HBox boxListDoctor;
+    @FXML private HBox boxDate;
+    private ListView<Patient> lvPatient;
+    private ListView<Doctor> lvDoctor;
+    @FXML private VBox boxAppoint;
+    @FXML private DatePicker date;
     private TableView<Patient> tblPatient;
     private TableView<Doctor> tblDoctor;
+    private TableView<Appointment> tblAppointment;
+    private LocalDate appointment_date;
     @FXML
     public void initialize(){
+        date = new DatePicker();
+        date.setValue(LocalDate.now());
+        lvPatient = new ListView<>();
+        lvPatient.getItems().addAll(PatientUtil.getPatientModel());
+        lvPatient.setCellFactory(
+                new Callback<ListView<Patient>,ListCell<Patient>>() {
+                    @Override
+                    public ListCell<Patient> call(ListView<Patient> listView) {
+                        return new ListCell<Patient>() {
+                            @Override
+                            public void updateItem(Patient item, boolean empty) {
+                                // Must call super
+                                super.updateItem(item, empty);
+
+                                int index = this.getIndex();
+                                String name = null;
+
+                                // Format name
+                                if (item == null || empty) {
+                                    // No action to perform
+                                } else {
+                                    name = item.getId() + ". " +
+                                            item.getName();
+                                }
+
+                                this.setText(name);
+                                setGraphic(null);
+                            }
+                        };
+                    }});
+
+        lvDoctor = new ListView<>();
+        lvDoctor.getItems().addAll(DoctorUtil.getDoctorModel());
+        lvDoctor.setCellFactory(
+                new Callback<ListView<Doctor>,ListCell<Doctor>>() {
+                    @Override
+                    public ListCell<Doctor> call(ListView<Doctor> listView) {
+                        return new ListCell<Doctor>() {
+                            @Override
+                            public void updateItem(Doctor item, boolean empty) {
+                                // Must call super
+                                super.updateItem(item, empty);
+
+                                int index = this.getIndex();
+                                String name = null;
+
+                                // Format name
+                                if (item == null || empty) {
+                                    // No action to perform
+                                } else {
+                                    name = item.getId() + ". " +
+                                            item.getName();
+                                }
+
+                                this.setText(name);
+                                setGraphic(null);
+                            }
+                        };
+                    }});
+
+        boxListPatient.getChildren().add(lvPatient);
+        boxListDoctor.getChildren().add(lvDoctor);
         tblPatient = new TableView<>(PatientUtil.getPatients());
         tblPatient.getColumns().addAll(PatientUtil.getIdColumn(),
                 PatientUtil.getNameColumn(),PatientUtil.getAgeColumn(),PatientUtil.getGenderColumn());
@@ -50,6 +128,12 @@ public class HospitalController {
         if (boxDoctor != null) {
             boxDoctor.getChildren().add(tblDoctor);
         }
+        tblAppointment = new TableView<>(AppointmentUtil.getAppointments());
+        tblAppointment.getColumns().addAll(
+                AppointmentUtil.getPatientName(),AppointmentUtil.getDoctorName(),
+                AppointmentUtil.getAppointmentDateColumn()
+        );
+        boxAppoint.getChildren().addAll(tblAppointment);
     }
     @FXML
     public void addPatient(ActionEvent event) {
@@ -90,6 +174,7 @@ public class HospitalController {
 
     public void refreshTable(){
         tblPatient.setItems(PatientUtil.getPatients());
+        tblDoctor.setItems(DoctorUtil.getDoctors());
     }
 
     @FXML
@@ -105,10 +190,12 @@ public class HospitalController {
             return;
         }
         DoctorUtil.addDoctor(name, spec);
-        if (tblDoctor != null) {
-            tblDoctor.setItems(DoctorUtil.getDoctors());
-        }
-        if (txtdName != null) txtdName.clear();
-        if (txtdSpec != null) txtdSpec.clear();
+        refreshTable();
+        reset();
+    }
+
+    @FXML
+    public void selectDate(ActionEvent event) {
+        appointment_date = date.getValue();
     }
 }
