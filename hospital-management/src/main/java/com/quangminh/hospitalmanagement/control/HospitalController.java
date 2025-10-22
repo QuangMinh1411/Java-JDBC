@@ -20,6 +20,7 @@ import javafx.util.Callback;
 import java.time.LocalDate;
 
 public class HospitalController {
+    @FXML  private Button btnBook;
     @FXML private Label lblpName;
     @FXML private TextField txtpName;
     @FXML private Label lblpAge;
@@ -46,15 +47,13 @@ public class HospitalController {
     private ListView<Patient> lvPatient;
     private ListView<Doctor> lvDoctor;
     @FXML private VBox boxAppoint;
-    @FXML private DatePicker date;
+    @FXML private DatePicker appointDate;
     private TableView<Patient> tblPatient;
     private TableView<Doctor> tblDoctor;
     private TableView<Appointment> tblAppointment;
     private LocalDate appointment_date;
     @FXML
     public void initialize(){
-        date = new DatePicker();
-        date.setValue(LocalDate.now());
         lvPatient = new ListView<>();
         lvPatient.getItems().addAll(PatientUtil.getPatientModel());
         lvPatient.setCellFactory(
@@ -118,7 +117,8 @@ public class HospitalController {
         tblPatient = new TableView<>(PatientUtil.getPatients());
         tblPatient.getColumns().addAll(PatientUtil.getIdColumn(),
                 PatientUtil.getNameColumn(),PatientUtil.getAgeColumn(),PatientUtil.getGenderColumn());
-        boxPatient.getChildren().add(tblPatient);
+        if(boxPatient!=null)
+            boxPatient.getChildren().add(tblPatient);
 
         tblDoctor = new TableView<>(DoctorUtil.getDoctors());
         tblDoctor.getColumns().addAll(
@@ -152,6 +152,7 @@ public class HospitalController {
             return;
         }
         PatientUtil.addPatient(name,gender,age);
+        lvPatient.getItems().add(new Patient(PatientUtil.getPatients().size(),name,gender,age));
         refreshTable();
         reset();
 
@@ -160,6 +161,8 @@ public class HospitalController {
     public void reset(){
         txtpName.clear();
         txtpAge.clear();
+        txtdSpec.clear();
+        txtdName.clear();
     }
     private void showAlert(String msg){
         Window owner = btnAddPatient.getScene().getWindow();
@@ -175,6 +178,7 @@ public class HospitalController {
     public void refreshTable(){
         tblPatient.setItems(PatientUtil.getPatients());
         tblDoctor.setItems(DoctorUtil.getDoctors());
+        tblAppointment.setItems(AppointmentUtil.getAppointments());
     }
 
     @FXML
@@ -190,12 +194,33 @@ public class HospitalController {
             return;
         }
         DoctorUtil.addDoctor(name, spec);
+        lvDoctor.getItems().add(new Doctor(DoctorUtil.getDoctors().size(),name,spec));
         refreshTable();
         reset();
     }
 
     @FXML
     public void selectDate(ActionEvent event) {
-        appointment_date = date.getValue();
+        appointment_date = appointDate.getValue();
+        System.out.println(appointment_date);
+    }
+    @FXML
+    public void bookAppointment(ActionEvent e){
+        int patient_id = lvPatient.getSelectionModel().getSelectedItem().getId();
+        int doctor_id = lvDoctor.getSelectionModel().getSelectedItem().getId();
+
+        System.out.println(patient_id+" "+doctor_id+" "+appointment_date);
+        if(PatientUtil.getPatientById(patient_id) && DoctorUtil.getDoctorById(doctor_id)){
+            if(AppointmentUtil.checkDoctorAvailablity(doctor_id,appointment_date)){
+                AppointmentUtil.addAppointment(patient_id,doctor_id,appointment_date);
+                refreshTable();
+            }else{
+                showAlert("Doctor is not available");
+                return;
+            }
+        }else {
+            showAlert("Invalid Doctor Id or Patient Id");
+        }
+
     }
 }

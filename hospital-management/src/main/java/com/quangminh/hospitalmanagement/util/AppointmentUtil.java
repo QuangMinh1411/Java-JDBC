@@ -29,7 +29,7 @@ public class AppointmentUtil {
             System.out.println(e.getMessage());
         }
         try(Connection connection = DriverManager.getConnection(url,username,password)){
-            String sql = "select * from appointments";
+            String sql = "select * from appointment";
             try(Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(sql)){
                 while(resultSet.next()){
@@ -48,7 +48,7 @@ public class AppointmentUtil {
     }
 
     public static void addAppointment(int patient_id,int doctor_id,LocalDate date){
-        String sql = "INSERT INTO appointments(patient_id,doctor_id,appointment_date) VALUES(?,?,?)";
+        String sql = "INSERT INTO appointment(patient_id,doctor_id,appointment_date) VALUES(?,?,?)";
         try(Connection connection = DriverManager.getConnection(url,username,password);
             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1,patient_id);
@@ -77,7 +77,7 @@ public class AppointmentUtil {
     }
     public static TableColumn<Appointment, LocalDate> getAppointmentDateColumn() {
         TableColumn<Appointment, LocalDate> appointmentDateColumn = new TableColumn<>("Date");
-        appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<>("appointment_date"));
+        appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentDate")); // Changed from "appointment_date" to "appointmentDate"
         TableColumn<Appointment, LocalDate> format = appointmentDateColumn;
         format.setCellFactory(col -> {
             TableCell<Appointment, LocalDate> cell
@@ -127,7 +127,25 @@ public class AppointmentUtil {
         return doctorNameColumn;
     }
 
-
+    public static boolean checkDoctorAvailablity(int doctor_id,LocalDate date){
+        String sql = "select COUNT(*) from appointment where doctor_id=? and appointment_date=?";
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,doctor_id);
+            statement.setDate(2, Date.valueOf(date));
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                int count = resultSet.getInt(1);
+                if(count==0){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 
 }
-

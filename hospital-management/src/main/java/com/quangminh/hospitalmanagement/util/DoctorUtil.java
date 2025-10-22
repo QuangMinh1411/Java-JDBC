@@ -82,7 +82,10 @@ public class DoctorUtil {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.getString("name");
+            if(resultSet.next())
+                return resultSet.getString("name");
+            else
+                return  null;
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }

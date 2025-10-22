@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quangminh.hospitalmanagement.control.HospitalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="623.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quangminh.hospitalmanagement.control.HospitalController">
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -128,7 +128,7 @@
                <content>
                   <HBox prefHeight="351.0" prefWidth="584.0">
                      <children>
-                        <SplitPane dividerPositions="0.5" prefHeight="351.0" prefWidth="602.0">
+                        <SplitPane dividerPositions="0.5" prefHeight="327.0" prefWidth="628.0">
                            <items>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                                  <children>
@@ -158,7 +158,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <VBox fx:id="boxAppoint" prefHeight="200.0" prefWidth="100.0" />
+                              <VBox fx:id="boxAppoint" prefHeight="325.0" prefWidth="324.0" />
                            </items>
                         </SplitPane>
                      </children>
@@ -175,4 +175,11 @@
          </font>
       </Label>
    </top>
+   <bottom>
+      <Button fx:id="btnBook" mnemonicParsing="false" onAction="#bookAppointment" text="Book " BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
 </BorderPane>
